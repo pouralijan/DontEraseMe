@@ -3,6 +3,8 @@
 //
 
 #include "MainMenu.h"
+#include "GameScene.h"
+
 
 USING_NS_CC;
 Scene *MainMenuScene::createScene()
@@ -34,4 +36,6 @@ bool MainMenuLayer::init() {
 
 void MainMenuLayer::playCallBack(Ref *pSender)
 {
+    auto gameScene = GameScene::createScene();
+    Director::getInstance()->replaceScene(TransitionPageTurn::create(1, gameScene, true));
 }

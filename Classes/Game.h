@@ -67,3 +67,4 @@ private:
     std::string currentShape;
     std::string nextShape;
 };
+

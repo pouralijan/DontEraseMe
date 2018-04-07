@@ -61,12 +61,16 @@ list(APPEND GAME_SOURCE
     Classes/MainMenu.cpp
     Classes/SpriteShape.cpp
     Classes/Game.cpp
+    Classes/GameScene.cpp
+    Classes/GameLayer.cpp
 )
 list(APPEND GAME_HEADER
     Classes/AppDelegate.h
     Classes/MainMenu.h
     Classes/SpriteShape.h
     Classes/Game.h
+    Classes/GameScene.h
+    Classes/GameLayer.h
 )
 
 if(ANDROID)

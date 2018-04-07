@@ -128,7 +128,7 @@ void SpriteShape::setBody() {
 }
 
 void SpriteShape::setAction() {
-    auto shapeMoveAction = MoveTo::create(Game::getInstancd()->getMoveSpeed(), Point(0, -visibleSize.height));
+    auto shapeMoveAction = MoveBy::create(Game::getInstancd()->getMoveSpeed(), Point(0, -visibleSize.height));
     auto easeBackIn = EaseSineOut::create(shapeMoveAction);
     auto remove = RemoveSelf::create();
     auto sequence = Sequence::create(easeBackIn, remove, nullptr);
