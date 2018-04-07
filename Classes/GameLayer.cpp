@@ -8,6 +8,7 @@
 #include "GameLayer.h"
 #include "SpriteShape.h"
 #include "Game.h"
+#include "GameOver.h"
 
 USING_NS_CC;
 
@@ -222,8 +223,8 @@ void GameLayer::update(float delta) {
     if (Game::getInstancd()->getGameState() == GameState::GAMEOVER) {
         this->stopAllActions();
         this->unscheduleAllCallbacks();
-//        auto *g = GameOverScene::createScene();
-//        Director::getInstance()->replaceScene(TransitionZoomFlipY::create(1.0f, g));
+        auto gameOverScene = GameOverScene::createScene();
+        Director::getInstance()->replaceScene(TransitionZoomFlipY::create(1.0f, gameOverScene));
     }
 
 }
