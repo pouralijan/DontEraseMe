@@ -14,6 +14,8 @@ LOCAL_MODULE_FILENAME := libMyGame
 LOCAL_SRC_FILES := $(LOCAL_PATH)/hellocpp/main.cpp \
                    $(LOCAL_PATH)/../../../Classes/AppDelegate.cpp \
                    $(LOCAL_PATH)/../../../Classes/MainMenu.cpp \
+                   $(LOCAL_PATH)/../../../Classes/SpriteShape.cpp \
+                   $(LOCAL_PATH)/../../../Classes/Game.cpp \
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../Classes
 

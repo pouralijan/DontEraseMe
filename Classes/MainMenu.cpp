@@ -34,5 +34,4 @@ bool MainMenuLayer::init() {
 
 void MainMenuLayer::playCallBack(Ref *pSender)
 {
-
 }

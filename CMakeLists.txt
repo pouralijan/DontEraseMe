@@ -59,10 +59,14 @@ include_directories(
 list(APPEND GAME_SOURCE
     Classes/AppDelegate.cpp
     Classes/MainMenu.cpp
+    Classes/SpriteShape.cpp
+    Classes/Game.cpp
 )
 list(APPEND GAME_HEADER
     Classes/AppDelegate.h
     Classes/MainMenu.h
+    Classes/SpriteShape.h
+    Classes/Game.h
 )
 
 if(ANDROID)
