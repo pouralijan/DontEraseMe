@@ -2,7 +2,7 @@
 /// /// // Created by hassan on 2/16/18.
 //
 
-#include <dirent.h>
+//#include <dirent.h>
 #include <iostream>
 #include <cocos/ui/UISlider.h>
 #include "GameLayer.h"
