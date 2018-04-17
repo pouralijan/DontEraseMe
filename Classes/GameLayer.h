@@ -2,8 +2,7 @@
 // Created by hassan on 2/16/18.
 //
 
-#ifndef PROJ_ANDROID_STUDIO_GAMELAYER_H
-#define PROJ_ANDROID_STUDIO_GAMELAYER_H
+#pragma once
 
 
 #include "cocos2d.h"
@@ -49,6 +48,3 @@ private:
     void contact(cocos2d::PhysicsBody *physicsBody);
 
 };
-
-
-#endif //PROJ_ANDROID_STUDIO_GAMELAYER_H

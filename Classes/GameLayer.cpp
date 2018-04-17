@@ -6,7 +6,7 @@
 #include <iostream>
 #include <cocos/ui/UISlider.h>
 #include "GameLayer.h"
-#include "SpriteShape.h"
+//#include "SpriteShape.h"
 #include "Game.h"
 #include "GameOver.h"
 
@@ -166,19 +166,19 @@ void GameLayer::SpawnShape(float delayTime) {
 }
 
 void GameLayer::ShapeChaleng(float delayTime) {
+    Vector<Node*> children = _children;
     for (auto &child:_children) {
-        if (dynamic_cast<SpriteShape *>(child)) {
-            SpriteShape *s = dynamic_cast<SpriteShape *>(child);
-            if (Game::getInstancd()->getCurrentShape() == s->getResourceName()) {
+        if (SpriteShape *spriteShape = dynamic_cast<SpriteShape *>(child)) {
+            if (Game::getInstancd()->getCurrentShape() == spriteShape->getResourceName()) {
 
-                if (s->isRemovable()) {
-                    s->stopAllActions();
+                if (spriteShape->isRemovable()) {
+                    spriteShape->stopAllActions();
                     auto remove = RemoveSelf::create();
-                    s->runAction(remove);
                     auto particle = ParticleExplosion::create();
-                    particle->setPosition(s->getPosition());
+                    particle->setPosition(spriteShape->getPosition());
                     particle->setTexture(Director::getInstance()->getTextureCache()->addImage(
-                            s->getResourceName()));
+                            spriteShape->getResourceName()));
+                    spriteShape->runAction(remove);
 
                     particle->setDuration(.1);
                     particle->setLife(.1);

@@ -2,7 +2,7 @@
 // Created by hassan on 3/27/18.
 //
 
-#pragma one
+#pragma once
 #include "cocos2d.h"
 
 class GameOverScene : public cocos2d::Scene
