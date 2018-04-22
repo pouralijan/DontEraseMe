@@ -7,7 +7,7 @@ USING_NS_CC;
 Scene* GameScene::createScene()
 {
     auto scene = GameScene::createWithPhysics();
-//    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     scene->getPhysicsWorld()->setGravity(Vect(0,0));
 

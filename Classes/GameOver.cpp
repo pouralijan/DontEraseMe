@@ -21,16 +21,11 @@ bool GameOverLayer::init() {
     {
         return false;
     }
-
+   
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-
-    auto menu_item0 = MenuItemFont::create("Back", CC_CALLBACK_1(GameOverLayer::backToMainMenu, this));
-
-    auto *menu = Menu::create(menu_item0, nullptr);
-    menu->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
-    this->addChild(menu);
+    
+    auto currentScoreLable = Label::createWithTTF("Play", "fonts/Marker Felt.ttf", 24);
 
     UserDefault *userDefault = UserDefault::getInstance();
 
@@ -43,15 +38,20 @@ bool GameOverLayer::init() {
         userDefault->flush();
     }
 
+    auto scoreLabel = Label::createWithTTF(StringUtils::toString("Current Score: " + StringUtils::toString(Game::getInstancd()->getScore())), "fonts/Marker Felt.ttf", 24);
+    scoreLabel->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y + 50);
+    this->addChild(scoreLabel);
 
-    auto highScoreLabel = Label::createWithTTF(StringUtils::toString(highScore), "fonts/Marker Felt.ttf", 24);
+    auto highScoreLabel = Label::createWithTTF(StringUtils::toString("High Score: " + StringUtils::toString(highScore)), "fonts/Marker Felt.ttf", 24);
     highScoreLabel->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y + 100);
     this->addChild(highScoreLabel);
 
-    auto scoreLabel = Label::createWithTTF(StringUtils::toString(Game::getInstancd()->getScore()), "fonts/Marker Felt.ttf", 24);
-    scoreLabel->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y + 200);
-    this->addChild(scoreLabel);
+    auto backLable = Label::createWithTTF("Back", "fonts/Marker Felt.ttf", 24);
+    auto menu_item0 = MenuItemLabel::create(backLable, CC_CALLBACK_1(GameOverLayer::backToMainMenu, this));
 
+    auto *menu = Menu::create(menu_item0, nullptr);
+    menu->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 4 + origin.y);
+    this->addChild(menu);
 
     Game::getInstancd()->reset();
 
