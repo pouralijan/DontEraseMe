@@ -162,8 +162,8 @@ void GameLayer::SpawnShape(float delayTime) {
     sprite->setAction();
     sprite->setBody();
 
-    int start = int(sprite->getContentSize().width / 2);
-    int end = int(visibleSize.width - sprite->getContentSize().width / 2);
+    int start = int(sprite->getContentSize().width / 4);
+    int end = int(visibleSize.width - sprite->getContentSize().width / 4);
     float x_posision = RandomHelper::random_int(start, end);
 
     sprite->setPosition(Point(x_posision, visibleSize.height));
