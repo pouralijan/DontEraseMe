@@ -2,11 +2,11 @@
 /// /// // Created by hassan on 2/16/18.
 //
 
-#include <dirent.h>
+//#include <dirent.h>
 #include <iostream>
 #include <cocos/ui/UISlider.h>
 #include "GameLayer.h"
-#include "SpriteShape.h"
+//#include "SpriteShape.h"
 #include "Game.h"
 #include "GameOver.h"
 
@@ -17,6 +17,7 @@ bool GameLayer::init() {
     if (!Layer::init())
         return false;
 
+    gui = new GUI(this);
     visibleSize = Director::getInstance()->getVisibleSize();
     origin = Director::getInstance()->getVisibleOrigin();
 
@@ -86,49 +87,53 @@ bool GameLayer::init() {
             ProgressFromTo::create(Game::getInstancd()->getChangeShapeTime(), .0f, 100.0f));
 
 
+    
+    Sprite *lifebar_boarder = Sprite::create("lifebar_boarder.png");
+    lifebar_boarder->setAnchorPoint(Vec2(0.5, 0.5));
+    Size lifebarSize = Size(visibleSize.width / 2 - currentShapeSize - nextShapeSize, nextShapeSize);
+    lifebar_boarder->setContentSize(lifebarSize);
     Point lifePosition = Point(
-            visibleSize.width / 2 + origin.x + currentShape->getContentSize().width +
-            nextShape->getContentSize().width,
-            visibleSize.height + origin.y - currentShape->getContentSize().height / 2 -
-            (visibleSize.height * 2 / 100));
-    Sprite *border = Sprite::create("progress_border.png");
-    border->setAnchorPoint(Vec2(0.5, 0.5));
-    border->setPosition(lifePosition);
-    border->setContentSize(Size(visibleSize.width / 2 - currentShapeSize, nextShapeSize));
-    this->addChild(border, 5);
+        ((visibleSize.width + origin.x) - (lifebar_boarder->getContentSize().width / 2) - ((visibleSize.width + origin.x) * 2 / 100)),
+        ((visibleSize.height + origin.y) - (lifebar_boarder->getContentSize().height / 2) - ((visibleSize.height + origin.y) * 2 / 100)));
 
-    Sprite *background1 = Sprite::create("progress_content.png");
-    background1->setContentSize(Size(visibleSize.width / 2 - currentShapeSize, nextShapeSize));
-    background1->setAnchorPoint(Vec2(0.0, 0.0));
-    background1->setPosition(Vec2(0.0, 0.0));
+    lifebar_boarder->setPosition(lifePosition);
+    this->addChild(lifebar_boarder, 5);
 
-    lifeBar = ProgressTimer::create(background1);
+    Sprite *lifebar_content = Sprite::create("lifebar_content.png");
+    lifebar_content->setContentSize(lifebarSize);
+    lifebar_content->setAnchorPoint(Vec2(0.0, 0.0));
+    lifebar_content->setPosition(Vec2(0.0, 0.0));
+
+    lifeBar = ProgressTimer::create(lifebar_content);
     lifeBar->setType(ProgressTimer::Type::BAR);
     lifeBar->setAnchorPoint(Vec2(0.0, 0.0));
     lifeBar->setPosition(Vec2(0.0, 0.0));
     lifeBar->setBarChangeRate(Vec2(1, 0));
     lifeBar->setMidpoint(Vec2(0.0, 0.0));
     lifeBar->setPercentage(100);
-    lifeBar->setContentSize(Size(visibleSize.width / 2 - currentShapeSize, nextShapeSize));
+    lifeBar->setContentSize(lifebarSize);
+
     Game::getInstancd()->setLifeBar(lifeBar);
-    border->addChild(lifeBar, 10);
+    lifebar_boarder->addChild(lifeBar, 10);
 
 
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("laser.plist");
-    auto frames = getAnimation("Laser_%02d.png", 11);
+//    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("laser.plist");
+//    auto frames = getAnimation("Laser_%02d.png", 11);
+//
+//    auto laser = Sprite::createWithSpriteFrame(frames.front());
+//    this->addChild(laser, 99);
+//    laser->setScale(visibleSize.width / 2, .4f);
 
-    auto laser = Sprite::createWithSpriteFrame(frames.front());
-    this->addChild(laser, 99);
-    laser->setPosition(visibleSize.width / 2, visibleSize.height * 5 / 100);
-    laser->setScale(visibleSize.width / 2, .4f);
-    auto bodyLaser = PhysicsBody::createBox(Size(laser->getContentSize().width, 1),
+    auto laser = Node::create();
+    laser->setPosition(visibleSize.width / 2, visibleSize.height * 2 / 100);
+
+    auto bodyLaser = PhysicsBody::createBox(Size(visibleSize.width, 1),
                                             PhysicsMaterial(0, 0, 0));
+    bodyLaser->setDynamic(false);
     bodyLaser->setCollisionBitmask(0);
     bodyLaser->setContactTestBitmask(true);
     laser->setPhysicsBody(bodyLaser);
-    auto animation = Animation::createWithSpriteFrames(frames, 1.0f / 20);
-    laser->runAction(RepeatForever::create(Animate::create(animation)));
-
+    addChild(laser);
 
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(GameLayer::onContactBegin, this);
@@ -166,19 +171,19 @@ void GameLayer::SpawnShape(float delayTime) {
 }
 
 void GameLayer::ShapeChaleng(float delayTime) {
-    for (auto &child:_children) {
-        if (dynamic_cast<SpriteShape *>(child)) {
-            SpriteShape *s = dynamic_cast<SpriteShape *>(child);
-            if (Game::getInstancd()->getCurrentShape() == s->getResourceName()) {
+    Vector<Node*> children = _children;
+    for (auto &child:children) {
+        if (SpriteShape *spriteShape = dynamic_cast<SpriteShape *>(child)) {
+            if (Game::getInstancd()->getCurrentShape() == spriteShape->getResourceName()) {
 
-                if (s->isRemovable()) {
-                    s->stopAllActions();
+                if (spriteShape->isRemovable()) {
+                    spriteShape->stopAllActions();
                     auto remove = RemoveSelf::create();
-                    s->runAction(remove);
                     auto particle = ParticleExplosion::create();
-                    particle->setPosition(s->getPosition());
+                    particle->setPosition(spriteShape->getPosition());
                     particle->setTexture(Director::getInstance()->getTextureCache()->addImage(
-                            s->getResourceName()));
+                            spriteShape->getResourceName()));
+                    spriteShape->runAction(remove);
 
                     particle->setDuration(.1);
                     particle->setLife(.1);
@@ -223,8 +228,9 @@ void GameLayer::update(float delta) {
     if (Game::getInstancd()->getGameState() == GameState::GAMEOVER) {
         this->stopAllActions();
         this->unscheduleAllCallbacks();
-        auto gameOverScene = GameOverScene::createScene();
-        Director::getInstance()->replaceScene(TransitionZoomFlipY::create(1.0f, gameOverScene));
+        gui->show_game_over(this);
+//        auto gameOverScene = GameOverScene::createScene();
+//        Director::getInstance()->replaceScene(TransitionZoomFlipY::create(1.0f, gameOverScene));
     }
 
 }

@@ -2,13 +2,13 @@
 // Created by hassan on 2/16/18.
 //
 
-#ifndef PROJ_ANDROID_STUDIO_GAMELAYER_H
-#define PROJ_ANDROID_STUDIO_GAMELAYER_H
+#pragma once
 
 
 #include "cocos2d.h"
 #include "SpriteShape.h"
 #include "ui/CocosGUI.h"
+#include "GUI.h"
 
 class GameLayer : public cocos2d::Layer
 {
@@ -27,7 +27,7 @@ public:
     bool onContactBegin(cocos2d::PhysicsContact &contact);
     void update(float) override;
     std::string randomShape();
-
+    GUI *gui;
 
 private:
     cocos2d::Point centerPos;
@@ -49,6 +49,3 @@ private:
     void contact(cocos2d::PhysicsBody *physicsBody);
 
 };
-
-
-#endif //PROJ_ANDROID_STUDIO_GAMELAYER_H

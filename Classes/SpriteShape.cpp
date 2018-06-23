@@ -1,4 +1,6 @@
 #include <cocos/audio/include/SimpleAudioEngine.h>
+#include <cmath>
+
 #include "SpriteShape.h"
 #include "Game.h"
 
@@ -100,11 +102,13 @@ bool SpriteShape::onTouchBegan(cocos2d::Touch * touch, cocos2d::Event * event)
 
 
 			}
-			if (Game::getInstancd()->getScore() > 0 && Game::getInstancd()->getScore() % 5 == 0)
-			{
-				Game::getInstancd()->setLevel(Game::getInstancd()->getLevel() + 1);
-				Game::getInstancd()->setMoveSpeed(Game::getInstancd()->getMoveSpeed() - 0.5f);
-			}
+
+			const int time_maximume = 10;
+			const int time_minimume = 1;
+			const float time_decrease_rate = 40;
+			
+			Game::getInstancd()->setMoveSpeed(time_minimume + (time_maximume - time_minimume) /( exp(Game::getInstancd()->getScore() / time_decrease_rate)));
+
 			return true;
         }
 		else
