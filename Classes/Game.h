@@ -8,6 +8,8 @@
 
 enum class GameState {
     NEW,
+    PLAYING,
+    PAUSED,
     STARTED,
     GAMEOVER,
     END,

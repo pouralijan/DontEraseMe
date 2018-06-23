@@ -20,7 +20,7 @@ Scene *MainMenuScene::createScene()
 bool MainMenuLayer::init() {
     if(!Layer::init())
         return false;
-    gui = new GUI(this);
+//    gui = new GUI(this);
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     auto centerPos = Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);

@@ -17,7 +17,7 @@ bool GameLayer::init() {
     if (!Layer::init())
         return false;
 
-    gui = new GUI(this);
+
     visibleSize = Director::getInstance()->getVisibleSize();
     origin = Director::getInstance()->getVisibleOrigin();
 
@@ -116,14 +116,6 @@ bool GameLayer::init() {
     Game::getInstancd()->setLifeBar(lifeBar);
     lifebar_boarder->addChild(lifeBar, 10);
 
-
-//    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("laser.plist");
-//    auto frames = getAnimation("Laser_%02d.png", 11);
-//
-//    auto laser = Sprite::createWithSpriteFrame(frames.front());
-//    this->addChild(laser, 99);
-//    laser->setScale(visibleSize.width / 2, .4f);
-
     auto laser = Node::create();
     laser->setPosition(visibleSize.width / 2, visibleSize.height * 2 / 100);
 
@@ -134,6 +126,10 @@ bool GameLayer::init() {
     bodyLaser->setContactTestBitmask(true);
     laser->setPhysicsBody(bodyLaser);
     addChild(laser);
+
+
+    gui = new GUI(this, Game::getInstancd()->getGameState());
+    Game::getInstancd()->setGameState(GameState::PLAYING);
 
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(GameLayer::onContactBegin, this);

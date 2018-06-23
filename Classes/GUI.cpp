@@ -11,10 +11,7 @@
 
 USING_NS_CC;
 
-GUI::GUI(Layer *)
-{
 
-}
 void GUI::show_game_over(cocos2d::Layer *layer)
 {
     Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -85,57 +82,55 @@ void GUI::go_to_home(Ref *p_sender)
     Director::getInstance()->replaceScene(TransitionFlipX::create(1,mainMenuScene));
 }
 
-void GUI::show_login(cocos2d::Layer *layer) {
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-    auto centerPos = Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
-
-    Sprite *background = Sprite::create("gameover.png");
-    background->setContentSize(Size(visibleSize.width * 75 / 100, visibleSize.width * 75 /100));
-    background->setPosition(Point(-background->getContentSize().width, visibleSize.height - background->getContentSize().height/2));
-    layer->addChild(background, 10000);
-
-    MoveTo *action = MoveTo::create(1, Point(background->getContentSize().width / 2 - (background->getContentSize().width * 10 / 100), background->getPositionY()));
-
-    background->runAction(action);
-
-    ui::TextField *user_name = ui::TextField::create("User Name", "fonts/CHLORINR.TTF", 25);
-    user_name->setPosition(Point(centerPos.x, centerPos.y + 100));
-    user_name->setTextColor(Color4B::BLUE);
-    user_name->setPlaceHolder("User Name");
-    user_name->setPlaceHolderColor(Color3B::RED);
-    user_name->setMaxLength(20);
-    user_name->setParent(background);
-
-
-    layer->addChild(user_name);
+void GUI::pause_game(cocos2d::Ref *p_sender)
+{
+    if(GameState::PLAYING == *this->gameState)
+    {
+        *gameState = GameState::PAUSED;
+        pause_background->runAction(FadeIn::create(.1));
+        EaseBounceOut *menu_action_easing = EaseBounceOut::create(MoveTo::create(.1, Vec2(visibleSize.width/2, visibleSize.height/2)));
+        pause_menu->runAction(menu_action_easing);
+    }else if (GameState::PAUSED == *gameState)
+    {
+        *gameState = GameState::PLAYING;
+        pause_background->runAction(FadeOut::create(.1));
+        EaseBounceOut *menu_action_easing = EaseBounceOut::create(MoveTo::create(.1, Vec2(visibleSize.width/2, visibleSize.height/2 + visibleSize.height)));
+        pause_menu->runAction(menu_action_easing);
+    }
 
 }
 
-bool LogingLayer::init() {
-    if(!Layer::init())
-        return false;
-
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-    auto centerPos = Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
-
-    Sprite *background = Sprite::create("gameover.png");
-    background->setContentSize(Size(visibleSize.width * 75 / 100, visibleSize.width * 75 /100));
-    background->setPosition(Point(-background->getContentSize().width, visibleSize.height - background->getContentSize().height/2));
-    this->addChild(background, 10000);
-
-    MoveTo *action = MoveTo::create(1, Point(background->getContentSize().width / 2 - (background->getContentSize().width * 10 / 100), background->getPositionY()));
-
-    background->runAction(action);
-
-    ui::TextField *user_name = ui::TextField::create("User Name", "fonts/CHLORINR.TTF", 25);
-    user_name->setPosition(Point(centerPos.x, centerPos.y + 100));
-    user_name->setTextColor(Color4B::BLUE);
-    user_name->setPlaceHolder("User Name");
-    user_name->setPlaceHolderColor(Color3B::RED);
-    user_name->setMaxLength(20);
-
-    this->addChild(user_name);
-    return true;
+GUI::GUI(cocos2d::Layer *layer, GameState gameState) {
+//    this->gameState = &gameState;
+//    visibleSize = Director::getInstance()->getVisibleSize();
+//    origin = Director::getInstance()->getVisibleOrigin();
+//
+//    MenuItemSprite *pauseItem = MenuItemSprite::create(Sprite::create("CloseNormal.png"), Sprite::create("CloseSelected.png"), Sprite::create("CloseNormal.png"), CC_CALLBACK_1(GUI::pause_game, this));
+//
+//    pauseItem->setPosition(Vec2(visibleSize.width - (pauseItem->getContentSize().width / 2) + origin.x, visibleSize.height - (pauseItem->getContentSize().height / 2) + origin.y));
+//
+//    Menu *menu_buttons = Menu::create(pauseItem, nullptr);
+//
+//    menu_buttons->setPosition(Vec2::ZERO);
+//    layer->addChild(menu_buttons);
+//
+//    pause_background = Sprite::create("background.png");
+//    pause_background->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
+//    pause_background->setOpacity(0);
+//    layer->addChild(pause_background);
+//
+//
+//    MenuItemImage *overlay_paused_menu_item = MenuItemImage::create("gameover.png", "gameover.png", "gameover.png",
+//                                                                    nullptr);
+//    MenuItemSprite *resume_item = MenuItemSprite::create(Sprite::create("CloseNormal.png"), Sprite::create("CloseSelected.png"), Sprite::create("CloseNormal.png"), CC_CALLBACK_1(GUI::pause_game, this));
+//    resume_item->setPosition(Vec2(-overlay_paused_menu_item->getContentSize().width / 4, resume_item->getPositionY()));
+//
+//    MenuItemSprite *home_item = MenuItemSprite::create(Sprite::create("CloseNormal.png"), Sprite::create("CloseSelected.png"), Sprite::create("CloseNormal.png"), CC_CALLBACK_1(GUI::pause_game, this));
+//    home_item->setPosition(Vec2(-overlay_paused_menu_item->getContentSize().width / 4, home_item->getPositionY()));
+//
+//    pause_menu = Menu::create(overlay_paused_menu_item, resume_item, home_item, nullptr);
+//    pause_menu->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 + visibleSize.height));
+//
+//    layer->addChild(pause_menu);
 }
+
